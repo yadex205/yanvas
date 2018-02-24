@@ -2,7 +2,21 @@
   "name": "yagl",
   "version": "0.0.0",
   "description": "A library for easy WebGL.",
-  "main": "index.js",
+  "scripts": {
+    "build": "jake build"
+  },
   "author": "Kanon Kakuno <yadex205@outlook.jp>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-minify": "^0.3.0",
+    "babelify": "^8.0.0",
+    "brfs": "^1.4.4",
+    "browserify": "^16.1.0",
+    "exorcist": "^1.0.1",
+    "jake": "^8.0.15",
+    "make-dir": "^1.2.0",
+    "rimraf": "^2.6.2"
+  }
 }
