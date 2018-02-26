@@ -13,6 +13,8 @@ uniform   vec3 lookAtPos;
 
 uniform   mat4 projectionMatrix;
 
+uniform   vec3 sunDirection;
+
 varying   vec4 fragmentColor;
 
 mat4 transpose(mat4 m) {
@@ -20,6 +22,10 @@ mat4 transpose(mat4 m) {
               m[0][1], m[1][1], m[2][1], m[3][1],
               m[0][2], m[1][2], m[2][2], m[3][2],
               m[0][3], m[1][3], m[2][3], m[3][3]);
+}
+
+mat4 modelMatrix(void) {
+  return transpose(scale * rotateX * rotateY * rotateZ * translate);
 }
 
 // @see http://yttm-work.jp/gmpg/gmpg_0003.html
@@ -40,10 +46,18 @@ mat4 viewMatrix(void) {
 }
 
 mat4 transformMatrix(void) {
-  return transpose(scale * rotateX * rotateY * rotateZ * translate * viewMatrix() * projectionMatrix);
+  return transpose(viewMatrix() * projectionMatrix) * modelMatrix();
 }
 
+// @see https://wgld.org/d/webgl/w021.html
+// vec4 sunLightDiffuse(void) {
+//   vec3 localLightDirection = normalize((inverse(modelMatrix()) * vec4(sunDirection))).xyz;
+//   float diffuse = clamp(dot(localLightDirection, normal), 0.1, 1.0);
+//   return vec4(vec3(diffuse), 1.0);
+// }
+
 void main(void) {
+  // fragmentColor = color * sunLightDiffuse();
   fragmentColor = color;
   normal;
   gl_Position = transformMatrix() * vec4(position, 1.0);
