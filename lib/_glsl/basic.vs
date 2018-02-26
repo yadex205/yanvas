@@ -1,5 +1,5 @@
 attribute vec3 position;
-attribute vec4 normal;
+attribute vec3 normal;
 uniform   vec4 color;
 
 uniform   mat4 modelTransform;
@@ -8,6 +8,7 @@ uniform   vec3 camPos;
 uniform   vec3 lookAtPos;
 uniform   mat4 projectionTransform;
 
+uniform   vec4 ambientColor;
 uniform   vec3 sunDirection;
 
 varying   vec4 fragmentColor;
@@ -37,15 +38,18 @@ mat4 viewMatrix(void) {
 }
 
 // @see https://wgld.org/d/webgl/w021.html
-// vec4 sunLightDiffuse(void) {
-//   vec3 localLightDirection = normalize((inverse(modelMatrix()) * vec4(sunDirection))).xyz;
-//   float diffuse = clamp(dot(localLightDirection, normal), 0.1, 1.0);
-//   return vec4(vec3(diffuse), 1.0);
-// }
+// @see https://wgld.org/d/webgl/w022.html
+// @see https://wgld.org/d/webgl/w023.html
+vec4 sunLight(vec4 baseColor) {
+  vec3 localLightDirection = normalize(modelTransformInverse * vec4(sunDirection, 0.0)).xyz;
+  vec3 localCamPos         = normalize(modelTransformInverse * vec4(camPos, 0.0)).xyz;
+  vec3 halfLE = normalize(localLightDirection + localCamPos);
+  float diffuse  = clamp(dot(localLightDirection, normalize(normal)), 0.0, 1.0);
+  float specular = pow(clamp(dot(halfLE, normalize(normal)), 0.0, 1.0), 50.0);
+  return baseColor * vec4(vec3(diffuse), 1.0) + vec4(vec3(specular), 1.0) + ambientColor;
+}
 
 void main(void) {
-  // fragmentColor = color * sunLightDiffuse();
-  fragmentColor = color;
-  normal;
+  fragmentColor = sunLight(color);
   gl_Position = projectionTransform * transpose(viewMatrix()) * modelTransform * vec4(position, 1.0);
 }
