@@ -21,9 +21,9 @@
             box = y.createBox()
             for (var i = 0; i < transforms.length; i++) {
               var t = y.createTransform()
-              t.translate = [y.random(-3, 3), y.random(-3, 3), y.random(-3, 3)]
-              t.scale = new Array(3).fill(y.random(0.3, 0.8))
-              t.rotate = [y.random(0, 360), y.random(0, 360), y.random(0, 360)]
+              t = t.scale(0.2, y.random(0.3, 5), y.random(0.3, 0.8))
+              t = t.rotate(y.random(0, 360), y.random(0, 360), y.random(0, 360))
+              t = t.translate(y.random(-3, 3), y.random(-3, 3), y.random(-3, 3))
               transforms[i] = t
             }
 

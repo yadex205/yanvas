@@ -2,11 +2,7 @@ attribute vec3 position;
 attribute vec4 normal;
 uniform   vec4 color;
 
-uniform   mat4 translate;
-uniform   mat4 rotateX;
-uniform   mat4 rotateY;
-uniform   mat4 rotateZ;
-uniform   mat4 scale;
+uniform   mat4 modelTransform;
 
 uniform   vec3 camPos;
 uniform   vec3 lookAtPos;
@@ -22,10 +18,6 @@ mat4 transpose(mat4 m) {
               m[0][1], m[1][1], m[2][1], m[3][1],
               m[0][2], m[1][2], m[2][2], m[3][2],
               m[0][3], m[1][3], m[2][3], m[3][3]);
-}
-
-mat4 modelMatrix(void) {
-  return transpose(scale * rotateX * rotateY * rotateZ * translate);
 }
 
 // @see http://yttm-work.jp/gmpg/gmpg_0003.html
@@ -46,7 +38,7 @@ mat4 viewMatrix(void) {
 }
 
 mat4 transformMatrix(void) {
-  return transpose(viewMatrix() * projectionMatrix) * modelMatrix();
+  return transpose(viewMatrix() * projectionMatrix) * modelTransform;
 }
 
 // @see https://wgld.org/d/webgl/w021.html
