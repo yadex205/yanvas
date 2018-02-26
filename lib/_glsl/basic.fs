@@ -1,6 +1,6 @@
 precision lowp float;
 
-varying vec4 fColor;
+varying vec4 fragmentColor;
 
 // @see https://stackoverflow.com/a/17897228
 vec3 hsv2rgb(vec3 c) {
@@ -10,5 +10,6 @@ vec3 hsv2rgb(vec3 c) {
 }
 
 void main(void) {
-  gl_FragColor = vec4(hsv2rgb(fColor.rgb), fColor.a);
+  // gl_FragColor = vec4(hsv2rgb(fragmentColor.rgb), fragmentColor.a);
+  gl_FragColor = fragmentColor;
 }
