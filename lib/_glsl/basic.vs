@@ -3,11 +3,10 @@ attribute vec4 normal;
 uniform   vec4 color;
 
 uniform   mat4 modelTransform;
-
+uniform   mat4 modelTransformInverse;
 uniform   vec3 camPos;
 uniform   vec3 lookAtPos;
-
-uniform   mat4 projectionMatrix;
+uniform   mat4 projectionTransform;
 
 uniform   vec3 sunDirection;
 
@@ -37,10 +36,6 @@ mat4 viewMatrix(void) {
               vec4(0.0, 0.0, 0.0, 1.0));
 }
 
-mat4 transformMatrix(void) {
-  return transpose(viewMatrix() * projectionMatrix) * modelTransform;
-}
-
 // @see https://wgld.org/d/webgl/w021.html
 // vec4 sunLightDiffuse(void) {
 //   vec3 localLightDirection = normalize((inverse(modelMatrix()) * vec4(sunDirection))).xyz;
@@ -52,5 +47,5 @@ void main(void) {
   // fragmentColor = color * sunLightDiffuse();
   fragmentColor = color;
   normal;
-  gl_Position = transformMatrix() * vec4(position, 1.0);
+  gl_Position = projectionTransform * transpose(viewMatrix()) * modelTransform * vec4(position, 1.0);
 }
