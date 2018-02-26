@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "A library for easy WebGL.",
   "scripts": {
-    "build": "jake build"
+    "build": "jake build --trace"
   },
   "author": "Kanon Kakuno <yadex205@outlook.jp>",
   "license": "MIT",
