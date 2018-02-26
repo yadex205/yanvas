@@ -1,6 +1,10 @@
 precision lowp float;
 
+uniform sampler2D texture;
+
 varying vec4 fragmentColor;
+varying vec2 vTextureCoord;
+
 
 // @see https://stackoverflow.com/a/17897228
 vec3 hsv2rgb(vec3 c) {
@@ -11,5 +15,6 @@ vec3 hsv2rgb(vec3 c) {
 
 void main(void) {
   // gl_FragColor = vec4(hsv2rgb(fragmentColor.rgb), fragmentColor.a);
-  gl_FragColor = fragmentColor;
+  // gl_FragColor = fragmentColor;
+  gl_FragColor = texture2D(texture, vTextureCoord);
 }
