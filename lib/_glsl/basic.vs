@@ -26,9 +26,9 @@ mat4 transpose(mat4 m) {
 // @see https://wgld.org/j/minMatrix.js
 mat4 viewMatrix(void) {
   vec3 zVector = normalize(lookAtPos - camPos);
-  vec3 xVector = cross(vec3(0.0, 1.0, 0.0), zVector);
+  vec3 xVector = cross(vec3(0.0, 0.0, 1.0), zVector);
   if (length(xVector) == 0.0) {
-    xVector = vec3(1.0, 0.0, 0.0);
+    xVector = vec3(-1.0, 0.0, 0.0);
   } else {
     xVector = normalize(xVector);
   }

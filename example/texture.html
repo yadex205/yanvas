@@ -28,7 +28,9 @@
 
           y.draw = function() {
             y.clear(0.5, 0.5, 0.5, 1.0)
-            y.camPos(1.0, 1.0, -2.0)
+            y.camPos(Math.cos(y.millis() / 1000),
+                     Math.sin(y.millis() / 1000),
+                     1.0)
             y.lookAtPos(0.0, 0.0, 0.0)
 
             y.transform(transform)
