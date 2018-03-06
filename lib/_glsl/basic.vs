@@ -47,7 +47,7 @@ vec4 gourandDirectional(vec4 baseColor) {
   vec3 localCamPos         = normalize(modelTransformInverse * vec4(camPos, 0.0)).xyz;
   vec3 halfLE = normalize(localLightDirection + localCamPos);
   float diffuse  = clamp(dot(localLightDirection, normalize(normal)), 0.0, 1.0);
-  float specular = pow(clamp(dot(halfLE, normalize(normal)), 0.0, 1.0), 50.0);
+  float specular = pow(clamp(dot(halfLE, normalize(normal)), 0.0, 1.0), 25.0);
   return baseColor * vec4(vec3(diffuse), 1.0) + vec4(vec3(specular), 1.0) + ambientColor;
 }
 
