@@ -1,7 +1,7 @@
 {
   "name": "yanvas",
   "version": "0.1.0",
-  "description": "A library for easy WebGL.",
+  "description": "A graphics library for easy WebGLing",
   "scripts": {
     "build": "jake build --trace"
   },
