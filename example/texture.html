@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Yanavs example - texture</title>
+
+    <style>
+      body { margin: 0; }
+    </style>
+
+    <script src="../dist/yanvas.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        new Yanvas(function(y) {
+          var quad = null
+          var transform = null
+          var texture = null
+
+          y.setup = function() {
+            y.setupCanvas('canvas', window.innerWidth, window.innerHeight)
+
+            quad = y.createQuad()
+            transform = y.createTransform().scale(1.67, 1.0, 1.0)
+            texture = y.createTexture()
+            texture.addTextureByURL('./512x512.jpg')
+            y.projection(window.innerWidth, window.innerHeight, 1.0, 100, 45)
+          }
+
+          y.draw = function() {
+            y.clear(0.5, 0.5, 0.5, 1.0)
+            y.camPos(Math.cos(y.millis() / 1000),
+                     Math.sin(y.millis() / 1000),
+                     1.0)
+            y.lookAtPos(0.0, 0.0, 0.0)
+
+            y.transform(transform)
+            y.fill(0.0, 0.0, 0.0, 1.0)
+            y.setTexture(texture)
+            y.drawShape(quad)
+          }
+        })
+      })
+    </script>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+  </body>
+</html>
