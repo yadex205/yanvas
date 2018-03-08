@@ -15,6 +15,6 @@ vec3 hsv2rgb(vec3 c) {
 
 void main(void) {
   // gl_FragColor = vec4(hsv2rgb(fragmentColor.rgb), fragmentColor.a);
-  // gl_FragColor = texture2D(texture, vTextureCoord) + fragmentColor;
+  texture2D(texture, vTextureCoord) + fragmentColor;
   gl_FragColor = fragmentColor;
 }
