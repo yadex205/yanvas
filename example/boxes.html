@@ -12,21 +12,18 @@
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         new Yanvas(function(y) {
-          var box = null
-          var transforms = new Array(50)
+          var boxes = new Array(50)
 
           y.setup = function() {
             y.setupCanvas('canvas', window.innerWidth, window.innerHeight)
 
-            box = y.createBox()
-            for (var i = 0; i < transforms.length; i++) {
-              var t = y.createTransform()
-              t = t.scale(0.2, y.random(0.3, 5), y.random(0.3, 0.8))
-              t = t.rotate(y.random(0, 360), y.random(0, 360), y.random(0, 360))
-              t = t.translate(y.random(-3, 3), y.random(-3, 3), y.random(-3, 3))
-              transforms[i] = t
+            for (var i = 0; i < boxes.length; i++) {
+              let box = y.createBox()
+              box.position = [y.random(-3, 3), y.random(-3, 3), y.random(-3, 3)]
+              box.rotation = [y.random(0, 360), y.random(0, 360), y.random(0, 360)]
+              box.scaling  = [0.2, y.random(0.3, 5), y.random(0.3, 0.8)]
+              boxes[i] = box
             }
-
             y.projection(window.innerWidth, window.innerHeight, 1.0, 100, 45)
           }
 
@@ -38,10 +35,9 @@
                      5 * Math.sin(y.millis() / 2311))
             y.lookAtPos(0.0, 0.0, 0.0)
 
-            for (var i = 0; i < transforms.length; i++) {
+            for (var i = 0; i < boxes.length; i++) {
               y.fill(0.0, 0.0, 1.0, 1.0)
-              y.transform(transforms[i])
-              y.drawShape(box)
+              y.render(boxes[i])
             }
           }
         })
