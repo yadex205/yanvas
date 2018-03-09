@@ -13,16 +13,14 @@
       document.addEventListener('DOMContentLoaded', function () {
         new Yanvas(function(y) {
           var quad = null
-          var transform = null
           var texture = null
 
           y.setup = function() {
             y.setupCanvas('canvas', window.innerWidth, window.innerHeight)
 
             quad = y.createQuad()
-            transform = y.createTransform().scale(1.67, 1.0, 1.0)
-            texture = y.createTexture()
-            texture.addTextureByURL('./512x512.jpg')
+            quad.scaling = [1.67, 1.0, 1.0]
+            quad.texture.addTextureByURL('./512x512.jpg')
             y.projection(window.innerWidth, window.innerHeight, 1.0, 100, 45)
           }
 
@@ -33,10 +31,8 @@
                      1.0)
             y.lookAtPos(0.0, 0.0, 0.0)
 
-            y.transform(transform)
             y.fill(0.0, 0.0, 0.0, 1.0)
-            y.setTexture(texture)
-            y.drawShape(quad)
+            y.render(quad)
           }
         })
       })
