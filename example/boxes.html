@@ -13,6 +13,7 @@
       document.addEventListener('DOMContentLoaded', function () {
         new Yanvas(function(y) {
           var boxes = new Array(50)
+          var light = null
 
           y.setup = function() {
             y.setupCanvas('canvas', window.innerWidth, window.innerHeight)
@@ -24,6 +25,9 @@
               box.scaling  = [0.2, y.random(0.3, 5), y.random(0.3, 0.8)]
               boxes[i] = box
             }
+            light = y.createLight()
+            light.mode = 'directional'
+
             y.projection(window.innerWidth, window.innerHeight, 1.0, 100, 45)
           }
 
@@ -34,6 +38,8 @@
                      5.0,
                      5 * Math.sin(y.millis() / 2311))
             y.lookAtPos(0.0, 0.0, 0.0)
+            y.setLight(light)
+
 
             for (var i = 0; i < boxes.length; i++) {
               y.fill(0.0, 0.0, 1.0, 1.0)

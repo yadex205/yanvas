@@ -1,3 +1,5 @@
+#define MAX_LIGHT_COUNT 16
+
 attribute vec3 vertex;
 attribute vec3 surfaceNormal;
 attribute vec3 vertexNormal;
@@ -12,8 +14,14 @@ uniform   vec3 camPos;
 uniform   vec3 lookAtPos;
 uniform   mat4 projectionTransform;
 
+// uniform   vec4 lightTransforms[MAX_LIGHT_COUNT];
+// uniform   int  lightMode[MAX_LIGHT_COUNT];
+// uniform   bool lightEnabled[MAX_LIGHT_COUNT];
+
+uniform   mat4 lightTransform;
+uniform   int  lightMode;
+
 uniform   vec4 ambientColor;
-uniform   vec3 sunDirection;
 
 varying   vec4 fragmentColor;
 varying   vec2 vTextureCoord;
@@ -42,24 +50,36 @@ mat4 viewMatrix(void) {
               vec4(0.0, 0.0, 0.0, 1.0));
 }
 
-// @see https://wgld.org/d/webgl/w021.html
-// @see https://wgld.org/d/webgl/w022.html
-// @see https://wgld.org/d/webgl/w023.html
-vec4 lightDirectional(vec4 baseColor, vec3 normal) {
-  vec3 localLightDirection = normalize(modelTransformInverse * vec4(sunDirection, 0.0)).xyz;
-  vec3 localCamPos         = normalize(modelTransformInverse * vec4(camPos, 0.0)).xyz;
-  vec3 halfLE = normalize(localLightDirection + localCamPos);
+/**
+ * @param [vec4] baseColor
+ * @param [vec3] normal
+ * @param [int] mode 0: directional, 1: point
+ * @param [mat4] lightTransform
+ * @return [vec4]
+ */
+vec4 lighting(vec4 baseColor, vec3 normal, int mode, mat4 lightTransform) {
+  vec3 localLightDirection = vec3(0.0, 0.0, 1.0);
+  if (mode == 0) {
+    vec4 lightPosition = lightTransform * vec4(0.0, 0.0, 1.0, 0.0);
+    localLightDirection = normalize((modelTransformInverse * lightPosition).xyz);
+  } else if (mode == 1) {
+    vec4 lightPosition = lightTransform * vec4(0.0, 0.0, 0.0, 1.0);
+    localLightDirection = normalize((modelTransformInverse * lightPosition).xyz - vertex);
+  }
+
+  vec3 localCameraPosition = normalize(modelTransformInverse * vec4(camPos, 0.0)).xyz;
+  vec3 halfLE = normalize(localLightDirection + localCameraPosition);
+
   float diffuse  = clamp(dot(localLightDirection, normalize(normal)), 0.0, 1.0);
   float specular = pow(clamp(dot(halfLE, normalize(normal)), 0.0, 1.0), 25.0);
   return baseColor * vec4(vec3(diffuse), 1.0) + vec4(vec3(specular), 1.0) + ambientColor;
 }
 
-// TODO: Implement gouraud shading
 vec4 shading(vec4 baseColor) {
   if (shadingMode == 1) {
-    return lightDirectional(baseColor, surfaceNormal);
+    return lighting(baseColor, surfaceNormal, lightMode, lightTransform);
   } else if (shadingMode == 2) {
-    return lightDirectional(baseColor, vertexNormal);
+    return lighting(baseColor, vertexNormal, lightMode, lightTransform);
   } else {
     return baseColor;
   }

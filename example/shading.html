@@ -14,18 +14,21 @@
         new Yanvas(function(y) {
           var box = null
           var torus = null
+          var light = null
 
           y.setup = function() {
             y.setupCanvas('canvas', window.innerWidth, window.innerHeight)
 
-            box = y.createBox()
+            box   = y.createBox()
             torus = y.createTorus(64, 64, 2.0, 0.5)
+            light = y.createLight()
 
             box.material.shadingMode = 'flat'
             torus.material.shadingMode = 'gouraud'
+            light.mode = 'directional'
+            light.rotation = [-45.0, 0.0, 0.0]
 
             y.projection(window.innerWidth, window.innerHeight, 1.0, 100, 45)
-            y.sunDirection(0.0, 5.0, -5.0)
           }
 
           y.draw = function() {
@@ -33,8 +36,9 @@
 
             y.camPos(0.0, 5.0, -5.0)
             y.lookAtPos(0.0, 0.0, 0.0)
+            y.setLight(light)
 
-            if (y.millis() % 2000 > 1000) {
+            if (y.millis() % 8000 > 4000) {
               box.material.shadingMode = 'constant'
               torus.material.shadingMode = 'constant'
             } else {

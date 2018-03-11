@@ -12,18 +12,25 @@
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         new Yanvas(function(y) {
-          var sphere = null
-          var box    = null
+          var sphere   = null
+          var sphereLS = null
+          var box      = null
+          var light    = null
 
           y.setup = function() {
             y.setupCanvas('canvas', window.innerWidth, window.innerHeight)
 
-            box    = y.createBox()
-            sphere = y.createSphere(0.4, 48, 48)
+            box      = y.createBox()
+            sphere   = y.createSphere(0.4, 48, 48)
+            sphereLS = y.createSphere(0.05, 16, 16)
+            light    = y.createLight()
             sphere.material.shadingMode = 'gouraud'
+            sphereLS.material.shadingMode = 'constant'
+            sphereLS.position = [0.0, 0.0, 1.0]
+            light.mode = 'point'
+            light.position = [0.0, 0.0, 1.0]
 
             y.projection(window.innerWidth, window.innerHeight, 1.0, 100, 45)
-            y.sunDirection(0.0, 5.0, 5.0)
           }
 
           y.draw = function() {
@@ -33,6 +40,10 @@
                      5 * Math.sin(y.millis() / 2000),
                     1.0)
             y.lookAtPos(0.0, 0.0, 0.0)
+
+            y.setLight(light)
+            y.fill(1.0, 1.0, 1.0, 1.0)
+            y.render(sphereLS)
 
             y.fill(1.0, 0.0, 0.0, 1.0)
             y.render(box)

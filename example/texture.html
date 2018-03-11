@@ -12,15 +12,19 @@
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         new Yanvas(function(y) {
-          var quad = null
-          var texture = null
+          var quad    = null
+          var light   = null
 
           y.setup = function() {
             y.setupCanvas('canvas', window.innerWidth, window.innerHeight)
 
-            quad = y.createQuad()
+            quad  = y.createQuad()
+            light = y.createLight()
+
             quad.scaling = [1.67, 1.0, 1.0]
             quad.texture.addTextureByURL('./512x512.jpg')
+            light.mode = 'directional'
+
             y.projection(window.innerWidth, window.innerHeight, 1.0, 100, 45)
           }
 
@@ -29,6 +33,7 @@
             y.camPos(Math.cos(y.millis() / 1000),
                      Math.sin(y.millis() / 1000),
                      1.0)
+            y.setLight(light)
             y.lookAtPos(0.0, 0.0, 0.0)
 
             y.fill(0.0, 0.0, 0.0, 1.0)
