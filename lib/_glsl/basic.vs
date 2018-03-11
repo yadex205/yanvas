@@ -14,12 +14,9 @@ uniform   vec3 camPos;
 uniform   vec3 lookAtPos;
 uniform   mat4 projectionTransform;
 
-// uniform   vec4 lightTransforms[MAX_LIGHT_COUNT];
-// uniform   int  lightMode[MAX_LIGHT_COUNT];
-// uniform   bool lightEnabled[MAX_LIGHT_COUNT];
-
-uniform   mat4 lightTransform;
-uniform   int  lightMode;
+uniform   mat4 lightTransforms[MAX_LIGHT_COUNT];
+uniform   int  lightModes[MAX_LIGHT_COUNT];
+uniform   bool lightEnabled[MAX_LIGHT_COUNT];
 
 uniform   vec4 ambientColor;
 
@@ -76,13 +73,25 @@ vec4 lighting(vec4 baseColor, vec3 normal, int mode, mat4 lightTransform) {
 }
 
 vec4 shading(vec4 baseColor) {
+  vec4 resultColor = vec4(0.0, 0.0, 0.0, 0.0);
+
   if (shadingMode == 1) {
-    return lighting(baseColor, surfaceNormal, lightMode, lightTransform);
+    for (int i = 0; i < MAX_LIGHT_COUNT; i++) {
+      if (lightEnabled[i]) {
+        resultColor += lighting(baseColor, surfaceNormal, lightModes[i], lightTransforms[i]);
+      }
+    }
   } else if (shadingMode == 2) {
-    return lighting(baseColor, vertexNormal, lightMode, lightTransform);
+    for (int i = 0; i < MAX_LIGHT_COUNT; i++) {
+      if (lightEnabled[i]) {
+        resultColor += lighting(baseColor, vertexNormal, lightModes[i], lightTransforms[i]);
+      }
+    }
   } else {
-    return baseColor;
+    resultColor = baseColor;
   }
+
+  return resultColor;
 }
 
 void main(void) {
