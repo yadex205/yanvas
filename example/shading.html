@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Yanavs example - torus</title>
+    <title>Yanavs example - shading</title>
 
     <style>
       body { margin: 0; }
@@ -21,6 +21,9 @@
             box = y.createBox()
             torus = y.createTorus(64, 64, 2.0, 0.5)
 
+            box.material.shadingMode = 'flat'
+            torus.material.shadingMode = 'gouraud'
+
             y.projection(window.innerWidth, window.innerHeight, 1.0, 100, 45)
             y.sunDirection(0.0, 5.0, -5.0)
           }
@@ -30,6 +33,14 @@
 
             y.camPos(0.0, 5.0, -5.0)
             y.lookAtPos(0.0, 0.0, 0.0)
+
+            if (y.millis() % 2000 > 1000) {
+              box.material.shadingMode = 'constant'
+              torus.material.shadingMode = 'constant'
+            } else {
+              box.material.shadingMode = 'flat'
+              torus.material.shadingMode = 'gouraud'
+            }
 
             y.fill(0.0, 0.0, 1.0, 1.0)
             box.rotation = [y.millis() / 20, y.millis() / 50, y.millis() / 10]

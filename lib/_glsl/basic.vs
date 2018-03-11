@@ -1,5 +1,6 @@
-attribute vec3 position;
-attribute vec3 normal;
+attribute vec3 vertex;
+attribute vec3 surfaceNormal;
+attribute vec3 vertexNormal;
 attribute vec2 textureCoord;
 uniform   vec4 color;
 
@@ -44,7 +45,7 @@ mat4 viewMatrix(void) {
 // @see https://wgld.org/d/webgl/w021.html
 // @see https://wgld.org/d/webgl/w022.html
 // @see https://wgld.org/d/webgl/w023.html
-vec4 lightDirectional(vec4 baseColor) {
+vec4 lightDirectional(vec4 baseColor, vec3 normal) {
   vec3 localLightDirection = normalize(modelTransformInverse * vec4(sunDirection, 0.0)).xyz;
   vec3 localCamPos         = normalize(modelTransformInverse * vec4(camPos, 0.0)).xyz;
   vec3 halfLE = normalize(localLightDirection + localCamPos);
@@ -54,16 +55,19 @@ vec4 lightDirectional(vec4 baseColor) {
 }
 
 // TODO: Implement gouraud shading
-vec3 shading(vec4 baseColor) {
+vec4 shading(vec4 baseColor) {
   if (shadingMode == 1) {
-    return lightDirectional(baseColor);
+    return lightDirectional(baseColor, surfaceNormal);
+  } else if (shadingMode == 2) {
+    return lightDirectional(baseColor, vertexNormal);
   } else {
     return baseColor;
   }
 }
 
 void main(void) {
-  fragmentColor = shading(color)
+  fragmentColor = shading(color);
   vTextureCoord = textureCoord;
-  gl_Position = projectionTransform * transpose(viewMatrix()) * modelTransform * vec4(position, 1.0);
+  vertexNormal;
+  gl_Position = projectionTransform * transpose(viewMatrix()) * modelTransform * vec4(vertex, 1.0);
 }
