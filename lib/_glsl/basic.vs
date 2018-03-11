@@ -1,19 +1,22 @@
-attribute  vec3 position;
-attribute  vec3 normal;
-attribute  vec2 textureCoord;
-uniform    vec4 color;
+attribute vec3 vertex;
+attribute vec3 surfaceNormal;
+attribute vec3 vertexNormal;
+attribute vec2 textureCoord;
+uniform   vec4 color;
 
-uniform    mat4 modelTransform;
-uniform    mat4 modelTransformInverse;
-uniform    vec3 camPos;
-uniform    vec3 lookAtPos;
-uniform    mat4 projectionTransform;
+uniform   int  shadingMode;
 
-uniform    vec4 ambientColor;
-uniform    vec3 sunDirection;
+uniform   mat4 modelTransform;
+uniform   mat4 modelTransformInverse;
+uniform   vec3 camPos;
+uniform   vec3 lookAtPos;
+uniform   mat4 projectionTransform;
 
-varying    vec4 fragmentColor;
-varying    vec2 vTextureCoord;
+uniform   vec4 ambientColor;
+uniform   vec3 sunDirection;
+
+varying   vec4 fragmentColor;
+varying   vec2 vTextureCoord;
 
 mat4 transpose(mat4 m) {
   return mat4(m[0][0], m[1][0], m[2][0], m[3][0],
@@ -42,7 +45,7 @@ mat4 viewMatrix(void) {
 // @see https://wgld.org/d/webgl/w021.html
 // @see https://wgld.org/d/webgl/w022.html
 // @see https://wgld.org/d/webgl/w023.html
-vec4 gourandDirectional(vec4 baseColor) {
+vec4 lightDirectional(vec4 baseColor, vec3 normal) {
   vec3 localLightDirection = normalize(modelTransformInverse * vec4(sunDirection, 0.0)).xyz;
   vec3 localCamPos         = normalize(modelTransformInverse * vec4(camPos, 0.0)).xyz;
   vec3 halfLE = normalize(localLightDirection + localCamPos);
@@ -51,8 +54,20 @@ vec4 gourandDirectional(vec4 baseColor) {
   return baseColor * vec4(vec3(diffuse), 1.0) + vec4(vec3(specular), 1.0) + ambientColor;
 }
 
+// TODO: Implement gouraud shading
+vec4 shading(vec4 baseColor) {
+  if (shadingMode == 1) {
+    return lightDirectional(baseColor, surfaceNormal);
+  } else if (shadingMode == 2) {
+    return lightDirectional(baseColor, vertexNormal);
+  } else {
+    return baseColor;
+  }
+}
+
 void main(void) {
-  fragmentColor = gourandDirectional(color);
+  fragmentColor = shading(color);
   vTextureCoord = textureCoord;
-  gl_Position = projectionTransform * transpose(viewMatrix()) * modelTransform * vec4(position, 1.0);
+  vertexNormal;
+  gl_Position = projectionTransform * transpose(viewMatrix()) * modelTransform * vec4(vertex, 1.0);
 }
