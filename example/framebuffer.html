@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Yanavs example - framebuffer</title>
+
+    <style>
+      body { margin: 0; }
+    </style>
+
+    <script src="../dist/yanvas.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        new Yanvas(function(y) {
+          var quad  = null
+          var torus = null
+          var light = null
+          var framebuffer = null
+          var projections = new Array(2)
+
+          y.setup = function() {
+            y.setupCanvas('canvas', window.innerWidth, window.innerHeight)
+
+            quad  = y.createQuad()
+            torus = y.createTorus()
+            light = y.createLight()
+            framebuffer = y.createFramebuffer(1024, 1024)
+
+            quad.texture = framebuffer.colorbuffer
+            quad.material.shadingMode = 'constant'
+            torus.material.shadingMode = 'gouraud'
+            light.mode = 'directional'
+
+            projections[0] = y.createProjectionTransform(1024, 1024, 1, 100, 45)
+            projections[1] = y.createProjectionTransform(window.innerWidth, window.innerHeight,
+                                                         1, 100, 45)
+          }
+
+          y.draw = function() {
+            y.useFramebuffer(framebuffer)
+            y.projection(projections[0])
+            y.clear(1.0, 1.0, 1.0, 1.0)
+            y.camPos(0, -10, 0)
+            y.lookAtPos(0, 0, 0)
+            y.setLight(light)
+            y.fill(1.0, 0.0, 0.0, 1.0)
+            torus.rotation = [y.millis() / 20, y.millis() / 30, y.millis() / 40]
+            y.render(torus)
+
+            y.useFramebuffer(null)
+            y.projection(projections[1])
+            y.clear(0.5, 0.5, 0.5, 1.0)
+            y.camPos(2 * Math.cos(y.millis() / 1000),
+                     2 * Math.sin(y.millis() / 1000),
+                     1 * Math.sin(y.millis() / 600) + 1.1)
+            y.lookAtPos(0.0, 0.0, 0.0)
+            y.setLight(light)
+            y.fill(0.0, 0.0, 0.0, 1.0)
+            y.render(quad)
+          }
+        })
+      })
+    </script>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+  </body>
+</html>
