@@ -19,15 +19,10 @@
   },
   "homepage": "https://github.com/yadex205/yanvas#readme",
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-minify": "^0.3.0",
-    "babelify": "^8.0.0",
-    "brfs": "^1.4.4",
-    "browserify": "^16.1.0",
-    "exorcist": "^1.0.1",
-    "jake": "^8.0.15",
-    "make-dir": "^1.2.0",
-    "rimraf": "^2.6.2"
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   }
 }
