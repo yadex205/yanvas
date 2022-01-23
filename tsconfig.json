@@ -10,13 +10,14 @@
     "strict": true,
     "baseUrl": ".",
     "module": "esnext",
+    "moduleResolution": "node",
     "paths": {
-      "*": ["src/*"]
+      "yanvas/*": ["src/*"]
     },
     "declaration": true,
     "declarationDir": "./dist",
     "emitDeclarationOnly": true,
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFIleNames": true,
     "lib": ["esnext", "dom"],
     "target": "esnext"
