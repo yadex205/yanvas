@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Yanvas sample - Simple</title>
+    <style>
+      body {
+        margin: 0;
+      }
+
+      #yanvasCanvas {
+        width: 640px;
+        height: 480px;
+      }
+    </style>
+    <script src="../dist/yanvas.development.bundle.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const canvasEl = document.getElementById('yanvasCanvas');
+        const gl = canvasEl.getContext('webgl2') || canvasEl.getContext('webgl');
+
+        if (!gl) {
+          throw new Error('Cannot obtain WebGL context.');
+        }
+
+        const y = new Yanvas(gl);
+        const box = y.createBox();
+        y.start(() => {});
+      });
+    </script>
+  </head>
+  <body>
+    <canvas id="yanvasCanvas" width="640" height="480"></canvas>
+  </body>
+</html>

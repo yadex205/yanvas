@@ -12,11 +12,11 @@
     "url": "https://github.com/yadex205/yanvas/issues"
   },
   "homepage": "https://github.com/yadex205/yanvas#readme",
-  "type": "module",
   "files": [
     "/dist"
   ],
   "scripts": {
+    "dev": "node scripts/develop.js",
     "test": "jest"
   },
   "devDependencies": {
@@ -26,6 +26,7 @@
     "@types/gl": "^4.1.0",
     "@types/jest": "^27.4.0",
     "babel-jest": "^27.4.6",
+    "esbuild": "^0.14.21",
     "gl": "^5.0.0",
     "jest": "^27.4.7",
     "prettier": "^2.5.1"

@@ -11,9 +11,6 @@
     "baseUrl": ".",
     "module": "esnext",
     "moduleResolution": "node",
-    "paths": {
-      "yanvas/*": ["src/*"]
-    },
     "declaration": true,
     "declarationDir": "./dist",
     "emitDeclarationOnly": true,
